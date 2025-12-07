@@ -1,3 +1,3 @@
 [workspace]
 resolver = "2"
-members = ["01_vm","warmups"]
+members = ["01_vm", "warmups"]
