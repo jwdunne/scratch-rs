@@ -1,5 +1,3 @@
-mod opcodes;
-mod stack;
+mod vm;
 
-pub use opcodes::Opcode;
-pub use stack::Stack;
+pub use vm::Vm;
