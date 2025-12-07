@@ -3,5 +3,9 @@
 version = 4
 
 [[package]]
-name = "scratch-rs"
+name = "vm"
+version = "0.1.0"
+
+[[package]]
+name = "warmups"
 version = "0.1.0"
