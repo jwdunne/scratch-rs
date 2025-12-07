@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 pub const STACK_SIZE: usize = 256;
 
 struct Stack {
@@ -31,6 +33,7 @@ impl Stack {
         self.data[self.sp]
     }
 
+    #[warn(dead_code)]
     fn peek(&self) -> i32 {
         if self.is_empty() {
             panic!("Peek of empty stack attempted")
@@ -78,6 +81,7 @@ impl Opcode {
         }
     }
 
+    #[warn(dead_code)]
     fn encode(&self) -> u16 {
         match self {
             Opcode::Push(arg) => arg & 0xFFF,
@@ -133,7 +137,7 @@ impl Vm {
             Opcode::Sub => {
                 let a = self.stack.pop();
                 let b = self.stack.pop();
-                self.stack.push(a - b);
+                self.stack.push(b - a);
             }
             Opcode::Mul => {
                 let a = self.stack.pop();
@@ -221,6 +225,22 @@ mod tests {
         let mut vm = Vm::new(code);
         vm.run();
 
-        assert_eq!(vm.stack.peek(), -12);
+        assert_eq!(vm.stack.peek(), 12);
+    }
+
+    #[test]
+    fn vm_handles_logic() {
+        let code = vec![
+            Opcode::Push(0).encode(),
+            Opcode::Jz(4).encode(),
+            Opcode::Push(0).encode(),
+            Opcode::Jz(0).encode(),
+            Opcode::Push(1).encode(),
+        ];
+
+        let mut vm = Vm::new(code);
+        vm.run();
+
+        assert_eq!(vm.stack.peek(), 1);
     }
 }
